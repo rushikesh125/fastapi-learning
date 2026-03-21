@@ -17,8 +17,11 @@ def app_get():
     return {"message":"Hello, Everything is good!."}
 
 @app.get("/posts")
-def get_all_posts():
-    posts = load_posts()
+def get_all_posts(limit:int=None):
+    data = load_posts()
+    posts = data["posts"]
+    if (limit and limit<len(posts)):
+        return posts[:limit]
     return posts
 
 @app.get("/posts/{id}")
