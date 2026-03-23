@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
-from datetime import datetime
+from datetime import datetime,timezone
 
 
 class User(BaseModel):
@@ -13,4 +13,4 @@ class PostCreate(BaseModel):
     image:Optional[str]=None
     likes:int
     commentsCount:int
-    createdAt:datetime
+    createdAt:datetime=datetime.now(timezone.utc)
