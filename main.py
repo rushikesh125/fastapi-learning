@@ -1,6 +1,6 @@
-from fastapi import FastAPI,HTTPException
+from fastapi import FastAPI,HTTPException,Request
 from mockData import products
-
+from dtos import Product
 app = FastAPI()
 
 
@@ -8,9 +8,6 @@ app = FastAPI()
 def home():
     return "Everything is Good!.."
 
-# @app.get("/products")
-# def getProducts():
-#     return products
 
 @app.get("/products/{id}")
 def getProductById(id:int):
@@ -19,9 +16,16 @@ def getProductById(id:int):
     return products[id-1]
 
 @app.get("/products")
-def getProductByQuery(category:str=None):
-    if category!=None:
-        res = [n for n in products if n["category"]==category]
-        return res
-    else:
-        return products
+def getProductByQuery(request:Request):
+     
+    return products
+
+@app.post("/create")
+def createProduct(data:Product):
+    id = len(products)+1
+    product = {
+        "id":id,
+        **data.model_dump()
+    }
+    products.append(product)
+    return products
